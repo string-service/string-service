@@ -20,7 +20,7 @@
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: auto; }  /* トップ表示を確保 */
 
     body {
       background: var(--bg);
@@ -1981,7 +1981,7 @@
     </div>
     <div class="hero-stats">
       <div>
-        <div class="stat-num">¥1,320</div>
+        <div class="stat-num">¥1,200</div>
         <div class="stat-label">張り工賃（税込）</div>
       </div>
       <div>
@@ -2056,21 +2056,21 @@
           通常
           <small>ガット代別途 ／ 1本あたり</small>
         </div>
-        <div class="price-amount">¥1,320</div>
+        <div class="price-amount">¥1,200</div>
       </div>
       <div class="price-row">
         <div class="price-name">
           ガット持ち込み
           <small>お客様のガットを使用する場合</small>
         </div>
-        <div class="price-amount">¥1,980</div>
+        <div class="price-amount">¥1,080</div>
       </div>
       <div class="price-row">
         <div class="price-name">
           即張り（当日渡し）
           <small>状況により対応できない場合あり</small>
         </div>
-        <div class="price-amount" style="color:var(--accent);">¥2,640</div>
+        <div class="price-amount" style="color:var(--accent);">¥2,000</div>
       </div>
     </div>
 
@@ -2503,6 +2503,17 @@
 </footer>
 
 <script>
+  // ページロード時は必ずトップから表示
+  if (history.scrollRestoration) {
+    history.scrollRestoration = 'manual';
+  }
+  window.scrollTo(0, 0);
+
+  // スクロール後にsmoothを有効化（ナビリンクのため）
+  setTimeout(() => {
+    document.documentElement.style.scrollBehavior = 'smooth';
+  }, 100);
+
   // Hamburger menu
   const btn = document.getElementById('menuBtn');
   const menu = document.getElementById('mobileMenu');
