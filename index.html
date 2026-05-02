@@ -2675,24 +2675,38 @@
 </footer>
 
 <script>
-  // ページロード時は必ずトップから表示
+  // ── トップ表示の確実な制御 ──
+  // ブラウザのスクロール位置自動復元を無効化
   if (history.scrollRestoration) {
     history.scrollRestoration = 'manual';
   }
-  window.scrollTo(0, 0);
 
-  // スクロール後にsmoothを有効化（ナビリンクのため）
-  setTimeout(() => {
-    document.documentElement.style.scrollBehavior = 'smooth';
-  }, 100);
+  // URLのハッシュを除去してトップから表示
+  if (window.location.hash) {
+    history.replaceState(null, '', window.location.pathname);
+  }
 
-  // Hamburger menu
+  // ページ読み込み完了後にトップへ強制移動
+  window.addEventListener('load', () => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  });
+
+  // ナビリンクのクリック時のみsmooth スクロールを適用
+  document.addEventListener('click', (e) => {
+    const link = e.target.closest('a[href^="#"]');
+    if (!link) return;
+    const target = document.querySelector(link.getAttribute('href'));
+    if (!target) return;
+    e.preventDefault();
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // モバイルメニューを閉じる
+    document.getElementById('mobileMenu').classList.remove('open');
+  });
+
+  // Hamburger toggle
   const btn = document.getElementById('menuBtn');
   const menu = document.getElementById('mobileMenu');
   btn.addEventListener('click', () => menu.classList.toggle('open'));
-  document.querySelectorAll('.menu-link').forEach(a => {
-    a.addEventListener('click', () => menu.classList.remove('open'));
-  });
 
   // Scroll fade-in
   const observer = new IntersectionObserver((entries) => {
